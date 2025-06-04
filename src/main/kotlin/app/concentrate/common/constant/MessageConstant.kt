@@ -1,0 +1,28 @@
+package app.concentrate.common.constant
+
+object MessageConstant {
+    const val SUCCESS = "Success"
+    const val ERROR = "Error"
+    const val CREATE_DATA_SUCCESS = "Create data success"
+    const val UPDATE_DATA_SUCCESS = "Update data success"
+    const val DELETE_DATA_SUCCESS = "Delete data success"
+    const val GET_DATA_SUCCESS = "Get data success"
+    const val DATA_NOT_FOUND = "Data not found"
+    const val VALIDATION_FAILED = "Validation failed"
+    const val DUPLICATE = "Duplicate"
+    const val INVALID = "Invalid"
+    const val UNAUTHORIZED = "Unauthorized"
+    const val FORBIDDEN = "Forbidden"
+    const val BAD_REQUEST = "Bad request"
+    const val INTERNAL_SERVER_ERROR = "Internal server error"
+    const val METHOD_NOT_ALLOWED = "Method not allowed"
+    const val UNSUPPORTED_MEDIA_TYPE = "Unsupported media type"
+    const val NOT_ACCEPTABLE = "Not acceptable"
+    const val REQUEST_TIMEOUT = "Request timeout"
+    const val CONFLICT = "Conflict"
+    const val UNCATEGORIZED = "Uncategorized exception"
+    const val OUTBOUND_SUCCESS = "Login with google success"
+    const val INVALID_TOKEN = "Invalid token"
+    const val UNAUTHENTICATED = "Unauthenticated"
+    const val UPLOAD_FILE_FAIL = "Upload file fail"
+}
