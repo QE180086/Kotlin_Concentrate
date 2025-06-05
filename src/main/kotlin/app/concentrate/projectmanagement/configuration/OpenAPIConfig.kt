@@ -15,7 +15,7 @@ class OpenApiConfig {
         private const val BEARER_AUTH = "bearerAuth"
         private const val BEARER = "bearer"
         private const val JWT = "JWT"
-        private const val DEV_SERVER_URLS = "http://localhost:8080"
+        private const val DEV_SERVER_URLS = "http://localhost:8080;https://your-render-app.onrender.com"
     }
 
     @Bean
