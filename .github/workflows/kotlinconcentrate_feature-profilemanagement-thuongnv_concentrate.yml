@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: kotlin-app
-          path: build/libs/*.jar
+          path: build/libs/concentrate-0.0.1-SNAPSHOT.jar
 
   deploy:
     runs-on: ubuntu-latest
