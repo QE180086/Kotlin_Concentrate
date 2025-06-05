@@ -14,15 +14,20 @@ import app.concentrate.projectmanagement.usermanagement.request.ForgetPasswordRe
 import app.concentrate.projectmanagement.usermanagement.request.ResetPassword
 import app.concentrate.projectmanagement.usermanagement.response.UserResponse
 import app.concentrate.projectmanagement.usermanagement.service.UserService
+import app.concentrate.projectmanagement.usermanagement.service.impl.UserServiceImpl
 import jakarta.validation.Valid
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/user")
+@Slf4j
 class UserController(
     private val userService: UserService
 ) {
+    private val log: org.slf4j.Logger? = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
     @GetMapping
     fun getAllUserBySearchText(
@@ -30,11 +35,11 @@ class UserController(
         @RequestParam(required = false, defaultValue = "10") size: Int,
         @RequestParam(required = false, defaultValue = "createdDate") field: String,
         @RequestParam(required = false, defaultValue = "desc") direction: String,
-        @RequestParam(required = false) searchText: String?
+        @RequestParam(required = false, defaultValue = "") searchText: String
     ): ResponseEntity<GenericResponse<PagingResponse<UserResponse>>> {
 
         val pagingRequest = PagingRequest(page, size, SortRequest(direction, field))
-        val users = searchText?.let { userService.getAllUser(it, pagingRequest) }
+        val users =  userService.getAllUser(searchText, pagingRequest)
 
         val response = GenericResponse(
             message = MessageDTO(
@@ -87,15 +92,15 @@ class UserController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/get-detail/{userId}")
-    fun getDetailUser(@PathVariable userId: String): ResponseEntity<GenericResponse<UserResponse>> {
+    @GetMapping("/get-detail")
+    fun getDetailUser(): ResponseEntity<GenericResponse<UserResponse>> {
         val response = GenericResponse(
             message = MessageDTO(
                 messageCode = MessageCodeConstant.M001_SUCCESS,
                 messageDetail = MessageConstant.SUCCESS
             ),
             isSuccess = true,
-            data = userService.getDetailUser(userId)
+            data = userService.getDetailUser()
         )
         return ResponseEntity.ok(response)
     }
