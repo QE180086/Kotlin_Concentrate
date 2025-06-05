@@ -22,6 +22,8 @@ import app.concentrate.projectmanagement.usermanagement.service.UserUtilService
 import jakarta.mail.MessagingException
 import jakarta.transaction.Transactional
 import lombok.RequiredArgsConstructor
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
@@ -37,6 +40,7 @@ class UserServiceImpl(
     private val emailService: EmailService,
     private val roleRepository: RoleRepository,
 ) : UserService {
+    private val log: org.slf4j.Logger? = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
     override fun getAllUser(searchText: String, pagingRequest: PagingRequest): PagingResponse<UserResponse> {
         val sort: Sort = PagingUtil.createSort(pagingRequest)
@@ -46,8 +50,7 @@ class UserServiceImpl(
             sort
         )
         val userPage = userRepository.getAllUserBySearchText(searchText, pageRequest)
-            ?: throw AppException(MessageCodeConstant.M003_NOT_FOUND, UserConstant.USER_NOT_FOUND)
-
+log?.info("User page content size: ${ userRepository.getAllUserBySearchText(searchText, pageRequest)}")
         val userResponses = userMapper.toListUserDTO(userPage.content)
         return PagingResponse(userResponses, pagingRequest, userPage.totalElements)
     }
@@ -89,9 +92,9 @@ class UserServiceImpl(
         return userMapper.toUserDTO(user)
     }
 
-    override fun getDetailUser(userId: String): UserResponse {
-        val user = userRepository.findById(userId)
-            .orElseThrow { AppException(MessageCodeConstant.M003_NOT_FOUND, UserConstant.USER_NOT_FOUND) }
+    override fun getDetailUser(): UserResponse {
+        val user = userUtilService.getCurrentUser()
+            ?: throw AppException(MessageCodeConstant.M003_NOT_FOUND, UserConstant.USER_NOT_FOUND)
         return userMapper.toUserDTO(user)
     }
 

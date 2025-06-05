@@ -17,7 +17,7 @@ interface UserService {
 
     fun resetPassword(resetPassword: ResetPassword): UserResponse
 
-    fun getDetailUser(userId: String): UserResponse
+    fun getDetailUser(): UserResponse
 
 //    fun assignRole(userId: String, role: UpdateRoleRequest): UserResponse
 

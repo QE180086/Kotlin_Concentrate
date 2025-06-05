@@ -18,6 +18,8 @@ import app.concentrate.projectmanagement.usermanagement.response.UserResponse
 import app.concentrate.projectmanagement.usermanagement.service.AuthenticationService
 import app.concentrate.projectmanagement.usermanagement.service.EmailService
 import jakarta.mail.MessagingException
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.ProviderManager
@@ -28,8 +30,11 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.logging.Logger
+import kotlin.math.log
 
 @Service
+@Slf4j
 class AuthenticationServiceImpl(
     private val userDetailsService: UserDetailsService,
     private val jwtUtil: JwtUtil,
@@ -41,6 +46,7 @@ class AuthenticationServiceImpl(
 //    private val profileRepository: ProfileRepository,
 //    private val profileService: ProfileService
 ) : AuthenticationService {
+    private val log: org.slf4j.Logger? = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
     @Bean
     fun authenticationManager(): AuthenticationManager {
@@ -64,10 +70,11 @@ class AuthenticationServiceImpl(
 
     @Throws(MessagingException::class)
     override fun register(register: UserRequestRegister): UserResponse {
-        userRepository.findByEmail(register.email)?.let {
+        userRepository.findByEmail(register.email).orElse(null)?.let {
+log?.info("Email already exists: ${userRepository.findByEmail(register.email)}")
             throw AppException(MessageCodeConstant.M005_INVALID, UserConstant.GMAIL_IS_EXIST)
         }
-        userRepository.findByUsername(register.username)?.let {
+        userRepository.findByUsername(register.username).orElse(null)?.let {
             throw AppException(MessageCodeConstant.M005_INVALID, UserConstant.USERNAME_IS_EXIST)
         }
 

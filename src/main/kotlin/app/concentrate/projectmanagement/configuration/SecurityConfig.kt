@@ -20,10 +20,6 @@ import java.util.*
 class SecurityConfig(
     private val jwtAuthenticationFilter: JwtRequestFilter
 ) {
-    @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
     companion object {
         private val PUBLIC_ENDPOINTS = arrayOf(
             "/api/auth/register", "/api/auth/login", "/api/auth/sendOTP", "/api/auth/verifyOTP",
