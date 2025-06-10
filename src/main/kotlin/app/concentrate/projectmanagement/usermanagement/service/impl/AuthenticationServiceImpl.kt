@@ -9,14 +9,17 @@ import app.concentrate.projectmanagement.usermanagement.constant.UserConstant
 import app.concentrate.projectmanagement.usermanagement.entity.User
 import app.concentrate.projectmanagement.usermanagement.enumration.UserStatus
 import app.concentrate.projectmanagement.usermanagement.mapper.UserMapper
+import app.concentrate.projectmanagement.usermanagement.repository.ProfileRepository
 import app.concentrate.projectmanagement.usermanagement.repository.RoleRepository
 import app.concentrate.projectmanagement.usermanagement.repository.UserRepository
+import app.concentrate.projectmanagement.usermanagement.request.CreateProfileDefaultRequest
 import app.concentrate.projectmanagement.usermanagement.request.UserRequestLogin
 import app.concentrate.projectmanagement.usermanagement.request.UserRequestRegister
 import app.concentrate.projectmanagement.usermanagement.response.AuthResponseLogin
 import app.concentrate.projectmanagement.usermanagement.response.UserResponse
 import app.concentrate.projectmanagement.usermanagement.service.AuthenticationService
 import app.concentrate.projectmanagement.usermanagement.service.EmailService
+import app.concentrate.projectmanagement.usermanagement.service.ProfileService
 import jakarta.mail.MessagingException
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
@@ -43,8 +46,8 @@ class AuthenticationServiceImpl(
     private val roleRepository: RoleRepository,
     private val emailService: EmailService,
     private val userMapper: UserMapper,
-//    private val profileRepository: ProfileRepository,
-//    private val profileService: ProfileService
+    private val profileRepository: ProfileRepository,
+    private val profileService: ProfileService
 ) : AuthenticationService {
     private val log: org.slf4j.Logger? = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
@@ -63,7 +66,7 @@ class AuthenticationServiceImpl(
         )
 
         val userDetails = authentication.principal as UserDetails
-        return AuthResponseLogin (
+        return AuthResponseLogin(
             accessToken = jwtUtil.generateToken(userDetails)
         )
     }
@@ -71,7 +74,7 @@ class AuthenticationServiceImpl(
     @Throws(MessagingException::class)
     override fun register(register: UserRequestRegister): UserResponse {
         userRepository.findByEmail(register.email).orElse(null)?.let {
-log?.info("Email already exists: ${userRepository.findByEmail(register.email)}")
+            log?.info("Email already exists: ${userRepository.findByEmail(register.email)}")
             throw AppException(MessageCodeConstant.M005_INVALID, UserConstant.GMAIL_IS_EXIST)
         }
         userRepository.findByUsername(register.username).orElse(null)?.let {
@@ -97,13 +100,11 @@ log?.info("Email already exists: ${userRepository.findByEmail(register.email)}")
 
         userRepository.save(user)
 
-//        val request = CreateProfileDefaultRequest {
-//            this.user = user
-//            gender = Gender.MALE
-//            fullName = user.username
-//        }
-
-//        profileService.createDefaultProfile(request)
+        val request = CreateProfileDefaultRequest(
+            user = user,
+            fullName = user.username
+        )
+        profileService.createDefaultProfile(request)
         return userMapper.toUserDTO(user)
     }
 }
