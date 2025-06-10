@@ -27,8 +27,8 @@ data class User(
     @JoinColumn(name = "role_name")
     var role: Role? = null,
 
-//    @OneToOne(mappedBy = "user")
-//    var profile: Profile? = null,
+    @OneToOne(mappedBy = "user")
+    var profile: Profile? = null,
 
     ) : BaseEntity() {
 

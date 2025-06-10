@@ -40,6 +40,7 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.mapstruct:mapstruct:1.5.5.Final")
+	implementation("com.cloudinary:cloudinary-http44:1.37.0")
 	kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
