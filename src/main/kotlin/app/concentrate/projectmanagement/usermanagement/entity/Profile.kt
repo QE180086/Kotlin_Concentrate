@@ -2,6 +2,7 @@ package app.concentrate.projectmanagement.usermanagement.entity
 
 import app.concentrate.common.entity.BaseEntity
 import app.concentrate.projectmanagement.usermanagement.enumration.Gender
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -23,5 +24,6 @@ data class Profile(
 
     @OneToOne(cascade = [CascadeType.REMOVE])
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
     var user: User? = null
 ) : BaseEntity()
