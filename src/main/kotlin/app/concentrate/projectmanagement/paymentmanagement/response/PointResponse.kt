@@ -1,4 +1,9 @@
 package app.concentrate.projectmanagement.paymentmanagement.response
 
-class PointResponse {
-}
+import app.concentrate.projectmanagement.usermanagement.entity.User
+
+data class PointResponse(
+    private val id: String,
+    private val user: User,
+    private val point: Int,
+)

@@ -1,4 +1,8 @@
 package app.concentrate.projectmanagement.paymentmanagement.request
 
-class CreatePointRequest {
-}
+import app.concentrate.projectmanagement.usermanagement.entity.User
+
+data class CreatePointRequest(
+     private val user: User,
+    private val point: Int = 0
+)
