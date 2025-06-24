@@ -82,6 +82,9 @@ class ProfileServiceImpl(
         if (!request.fullName.isNullOrBlank()) {
             profile.fullName = request.fullName
         }
+        if (!request.phoneNumber.isNullOrBlank()) {
+            profile.phoneNumber = request.phoneNumber
+        }
         request.gender?.let {
             profile.gender = it
         }
